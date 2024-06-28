@@ -1,14 +1,17 @@
 use dep::bigint::{BigNum, BNExpressionInput};
 use dep::bigint::fields::bn254Fq::BNParams as BNParams;
 use dep::bigint::test_params::{
-  nonprime4000::Test4000NonPrimeParams,
+  nonprime1000::Test1000NonPrimeParams,
   nonprime3000::Test3000NonPrimeParams,
+  nonprime4000::Test4000NonPrimeParams,
   prime2048::Test2048PrimeParams,
   };
 use dep::bigint::BigNumParamsTrait;
 
-type TestMod4000 = BigNum<34, Test4000NonPrimeParams>;
+type TestMod1000 = BigNum<9, Test1000NonPrimeParams>;
 type TestMod3000 = BigNum<26, Test3000NonPrimeParams>;
+type TestMod4000 = BigNum<34, Test4000NonPrimeParams>;
+
 type TestMod2048 = BigNum<18, Test2048PrimeParams>;
 
 fn main(a: Field, b: Field) {
@@ -16,7 +19,7 @@ fn main(a: Field, b: Field) {
   // run `nargo info` to get gatecount
   // ~3000 gates are added upfront because of rangecheck, see
   // https://hackmd.io/xyvJnW9iQyWda-IJK1_yDw?#When-to-use-Karatsuba-and-when-to-use-Schoolbook
-    benchmark_multiplication_2048(a, b);
+    benchmark_multiplication_1000(a, b);
 }
 
 fn benchmark_multiplication<N, Params>(x: Field, y: Field, _: BigNum<N, Params>) where Params: BigNumParamsTrait<N> {
@@ -36,15 +39,13 @@ fn benchmark_multiplication<N, Params>(x: Field, y: Field, _: BigNum<N, Params>)
     BigNum::evaluate_quadratic_expression([[lhs_expr]], [[rhs_expr]], [rem]);
 }
 
-fn benchmark_multiplication_4000(x: Field, y: Field) {
-    let stub: TestMod4000 = BigNum::new();
+fn benchmark_multiplication_1000(x: Field, y: Field) {
+    let stub: TestMod1000 = BigNum::new();
     benchmark_multiplication(x, y, stub)
 
-    // Multiplication 34 limbs
-    // Schoolbook 6841
-    // 1-level Karatsuba 6730
-    // 2-level Karatsuba 6684 <- optimal
-    // 3-level Karatsuba 6783
+    // Multiplication 9 limbs
+    // Schoolbook 4042 <- slightly better
+    // 1-level Karatsuba 4044
 }
 
 fn benchmark_multiplication_3000(x: Field, y: Field) {
@@ -56,6 +57,17 @@ fn benchmark_multiplication_3000(x: Field, y: Field) {
     // 1-level Karatsuba 4924
     // 2-level Karatsuba 4909 <- optimal
     // 3-level Karatsuba 4998
+}
+
+fn benchmark_multiplication_4000(x: Field, y: Field) {
+    let stub: TestMod4000 = BigNum::new();
+    benchmark_multiplication(x, y, stub)
+
+    // Multiplication 34 limbs
+    // Schoolbook 6841
+    // 1-level Karatsuba 6730
+    // 2-level Karatsuba 6684 <- optimal
+    // 3-level Karatsuba 6783
 }
 
 fn benchmark_multiplication_2048(x: Field, y: Field) {
