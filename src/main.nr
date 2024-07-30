@@ -33,6 +33,7 @@ type TestMod1790 = BigNum<15, Test1790NonPrimeParams>;
 type TestMod1915 = BigNum<16, Test1915NonPrimeParams>;
 type TestMod2035 = BigNum<17, Test2035NonPrimeParams>;
 type TestMod2155 = BigNum<18, Test2155NonPrimeParams>;
+type TestMod2048 = BigNum<18, Test2048PrimeParams>;
 type TestMod3000 = BigNum<26, Test3000NonPrimeParams>;
 type TestMod4000 = BigNum<34, Test4000NonPrimeParams>;
 
