@@ -42,7 +42,7 @@ fn main(a: Field, b: Field) {
     // run `nargo info` to get gatecount
     // ~3000 gates are added upfront because of rangecheck, see
     // https://hackmd.io/xyvJnW9iQyWda-IJK1_yDw?#When-to-use-Karatsuba-and-when-to-use-Schoolbook
-    benchmark_multiplication_4000(a, b);
+    benchmark_multiplication_${bits}(a, b);
 }
 
 fn benchmark_multiplication<let N: u64, Params>(x: Field, y: Field, _: BigNum<N, Params>) where Params: BigNumParamsTrait<N> {
