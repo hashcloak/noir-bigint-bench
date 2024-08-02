@@ -3,11 +3,6 @@
 # Experiment to be executed.
 experiment_name="schoolbook"
 
-# Regex to extract the number of ACIR opcodes and circuit size from the bb
-# command. 
-acir_opcodes_regex="(?<=\"acir_opcodes\":\s)\d+"
-circuit_size_regex="(?<=\"circuit_size\":\s)\d+"
-
 # Some paths to files
 target_file="./target/bigint_benchmarking.json"
 code_content_file="scripts/code_content.txt"
@@ -33,14 +28,14 @@ for n_bits in "${limbs[@]}"; do
     # Count the gates.
     result=$(bb gates -b $target_file)
 
-    # Save result in provisional file
-    acir_opcodes=$(echo "$result" | grep -oP "$acir_opcodes_regex")
-    n_gates=$(echo "$result" | grep -oP "$circuit_size_regex")
+    # Extract acir_opcodes and circuit_size using awk
+    acir_opcodes=$(echo "$result" | awk -F: '/"acir_opcodes"/ {gsub(/[^0-9]/, "", $2); print $2}')
+    circuit_size=$(echo "$result" | awk -F: '/"circuit_size"/ {gsub(/[^0-9]/, "", $2); print $2}')
 
-    echo "ACIR OP: $acir_opcodes"
+    echo "ACIR OP: $acir_opcodes, Circuit Size: $circuit_size"
 
     # Save results in files.
-    echo "$n_bits,$acir_opcodes,$n_gates" >> $results_file
+    echo "$n_bits,$acir_opcodes,$circuit_size" >> $results_file
 done
 
 echo "Experiment finished."
