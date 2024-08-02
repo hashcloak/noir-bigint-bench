@@ -5,4 +5,4 @@ authors = ["HashCloak"]
 compiler_version = ">=0.30.0"
 
 [dependencies]
-bigint = { path = "../noir_bigint" }
+bignum = { path = "../hc-noir-bignum" }
