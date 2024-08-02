@@ -52,7 +52,7 @@ fn benchmark_multiplication<let N: u64, Params>(x: Field, y: Field, _: BigNum<N,
 
     let mut lhs: BigNum<N, Params> = BigNum::__derive_from_seed([a as u8]);
     let mut rhs: BigNum<N, Params> = BigNum::__derive_from_seed([b as u8]);
-    for _ in 0..100 {
+    for _ in 0..10 {
         let mut lhs_expr = BNExpressionInput::new(lhs, false);
         let rhs_expr = BNExpressionInput::new(rhs, false);
 

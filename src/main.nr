@@ -42,7 +42,7 @@ fn main(a: Field, b: Field) {
     // run `nargo info` to get gatecount
     // ~3000 gates are added upfront because of rangecheck, see
     // https://hackmd.io/xyvJnW9iQyWda-IJK1_yDw?#When-to-use-Karatsuba-and-when-to-use-Schoolbook
-    benchmark_multiplication_3000(a, b);
+    benchmark_multiplication_4000(a, b);
 }
 
 fn benchmark_multiplication<let N: u64, Params>(x: Field, y: Field, _: BigNum<N, Params>) where Params: BigNumParamsTrait<N> {
@@ -52,7 +52,7 @@ fn benchmark_multiplication<let N: u64, Params>(x: Field, y: Field, _: BigNum<N,
 
     let mut lhs: BigNum<N, Params> = BigNum::__derive_from_seed([a as u8]);
     let mut rhs: BigNum<N, Params> = BigNum::__derive_from_seed([b as u8]);
-    for _ in 0..100 {
+    for _ in 0..10 {
         let mut lhs_expr = BNExpressionInput::new(lhs, false);
         let rhs_expr = BNExpressionInput::new(rhs, false);
 
@@ -134,7 +134,7 @@ fn benchmark_multiplication_1790(x: Field, y: Field) {
 }
 
 fn benchmark_multiplication_1915(x: Field, y: Field) {
-    let stub: TestMod1915 = BigNum::new();
+    let stub: TestMod1555 = BigNum::new();
     benchmark_multiplication(x, y, stub)
 }
 
