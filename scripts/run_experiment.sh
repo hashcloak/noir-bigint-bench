@@ -10,7 +10,9 @@ main_file="src/main.nr"
 results_file="results/results_${experiment_name}.csv"
 
 declare -a limbs=(
-256
+    U256
+    U768
+    U4096
 )
 
 # Defines the header for the CSV file
@@ -19,8 +21,8 @@ echo "Bits,ACIR opcodes,Circuit size" > $results_file
 for n_bits in "${limbs[@]}"; do
     # Replace the bits in the source code and write it into the main.nr
     echo "Executing experiment for $n_bits"
-    # replaced_code=$(sed "s/\${bits}/$n_bits/" $code_content_file)
-    # echo "$code_content_file" > $main_file 
+    replaced_code=$(sed "s/\${bits}/$n_bits/" $code_content_file)
+    echo "$replaced_code" > $main_file 
 
     # Compile the file.
     nargo compile
