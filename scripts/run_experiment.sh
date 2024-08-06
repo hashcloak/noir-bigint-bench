@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# Script to test the arithmetic operations between BigNum types in the
+# noir-bignum library.
+#
+# How to run:
+#   1. Go to the root of the project.
+#   2. Run the command 
+#       bash scripts/run_experiment.sh <flags>
+#   
+#   The available flags are:
+#       -s - Run the benchmark for additions.
+#       -m - Run the benchmark for multiplications.
+#       -a - Run the benchmark for all the arithmetic operations.
+
 # Experiment to be executed.
 experiment_name="schoolbook"
 
@@ -9,33 +22,60 @@ code_content_file="scripts/code_content.txt"
 main_file="src/main.nr"
 results_file="results/results_${experiment_name}.csv"
 
-declare -a limbs=(
-256
+# Read the parameters to execute just the selected experiments
+operations=()
+while getopts "sma" flags; do
+    case $flags in
+    s)
+        echo "Experiments for additions will be executed."
+        operations+=("add")
+    ;;
+    m)
+        echo "Experiments for multiplications will be executed."
+        operations+=("mult")
+    ;;
+    a)
+        echo "All the experiments will be executed."
+        operations=("add" "mult")
+    ;;
+    *)
+        echo "Invalid argument."
+    ;;
+    esac
+done
+
+declare -a types=(
+    "U256"
+    "U384"
+    "U4096"
 )
 
 # Defines the header for the CSV file
-echo "Bits,ACIR opcodes,Circuit size" > $results_file
+echo "Type,Operation,ACIR opcodes,Circuit size" > $results_file
 
-for n_bits in "${limbs[@]}"; do
-    # Replace the bits in the source code and write it into the main.nr
-    echo "Executing experiment for $n_bits"
-    # replaced_code=$(sed "s/\${bits}/$n_bits/" $code_content_file)
-    # echo "$code_content_file" > $main_file 
+for operation in "${operations[@]}"; do
+    for type in "${types[@]}"; do
+        echo "Executing experiment for $operation on $type."
 
-    # Compile the file.
-    nargo compile
+        # Replace the type and the operation that will be tested in the source 
+        # code and write it into the main.nr
+        replaced_code=$(sed -e "s/\${type}/$type/" -e $"s/\${operation}/$operation/" $code_content_file)
+        echo "$replaced_code" > $main_file 
 
-    # Count the gates.
-    result=$(bb gates -b $target_file)
+        # Compile the file.
+        nargo compile
 
-    # Extract acir_opcodes and circuit_size using awk
-    acir_opcodes=$(echo "$result" | awk -F: '/"acir_opcodes"/ {gsub(/[^0-9]/, "", $2); print $2}')
-    circuit_size=$(echo "$result" | awk -F: '/"circuit_size"/ {gsub(/[^0-9]/, "", $2); print $2}')
+        # Count the gates.
+        result=$(bb gates -b $target_file)
 
-    echo "ACIR OP: $acir_opcodes, Circuit Size: $circuit_size"
+        # Extract acir_opcodes and circuit_size using awk
+        acir_opcodes=$(echo "$result" | awk -F: '/"acir_opcodes"/ {gsub(/[^0-9]/, "", $2); print $2}')
+        circuit_size=$(echo "$result" | awk -F: '/"circuit_size"/ {gsub(/[^0-9]/, "", $2); print $2}')
 
-    # Save results in files.
-    echo "$n_bits,$acir_opcodes,$circuit_size" >> $results_file
+        echo "EPERIMENT: $operation, ACIR OP: $acir_opcodes, Circuit Size: $circuit_size"
+
+        # Save results in files.
+        echo "$type,$operation,$acir_opcodes,$circuit_size" >> $results_file
+    done
 done
-
 echo "Experiment finished."

@@ -1,2 +1,7 @@
-Bits,ACIR opcodes,Circuit size
-256,3222,8507
+Type,Operation,ACIR opcodes,Circuit size
+U256,add,1822,5510
+U384,add,2422,6875
+U4096,add,21022,38310
+U256,mult,3222,8507
+U384,mult,5122,11710
+U4096,mult,211222,257307
