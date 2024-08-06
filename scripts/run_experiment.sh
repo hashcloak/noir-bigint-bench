@@ -11,6 +11,7 @@
 #   The available flags are:
 #       -s - Run the benchmark for additions.
 #       -m - Run the benchmark for multiplications.
+#       -r - Run the benchmark for subtraction
 #       -a - Run the benchmark for all the arithmetic operations.
 
 # Experiment to be executed.
@@ -24,11 +25,15 @@ results_file="results/results_${experiment_name}.csv"
 
 # Read the parameters to execute just the selected experiments
 operations=()
-while getopts "sma" flags; do
+while getopts "smar" flags; do
     case $flags in
     s)
         echo "Experiments for additions will be executed."
         operations+=("add")
+    ;;
+    r)
+        echo "Experiments for additions will be executed."
+        operations+=("sub")
     ;;
     m)
         echo "Experiments for multiplications will be executed."
@@ -36,7 +41,7 @@ while getopts "sma" flags; do
     ;;
     a)
         echo "All the experiments will be executed."
-        operations=("add" "mult")
+        operations=("add" "mult" "sub")
     ;;
     *)
         echo "Invalid argument."
