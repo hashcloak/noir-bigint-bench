@@ -25,7 +25,7 @@ results_file="results/results_${experiment_name}.csv"
 
 # Read the parameters to execute just the selected experiments
 operations=()
-while getopts "smar" flags; do
+while getopts "smardek" flags; do
     case $flags in
     s)
         echo "Experiments for additions will be executed."
@@ -39,9 +39,21 @@ while getopts "smar" flags; do
         echo "Experiments for multiplications will be executed."
         operations+=("mult")
     ;;
+    d)
+        echo "Experiments for unsigned division will be executed."
+        operations+=("udiv")
+    ;;
+    e)
+        echo "Experiments for equality will be executed."
+        operations+=("eq")
+    ;;
+    k)
+        echo "Experiments for unsigned remainder will be executed."
+        operations+=("umod")
+    ;;
     a)
         echo "All the experiments will be executed."
-        operations=("add" "mult" "sub")
+        operations=("add" "mult" "sub" "udiv" "eq" "umod")
     ;;
     *)
         echo "Invalid argument."

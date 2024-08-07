@@ -1,0 +1,35 @@
+use dep::bignum::BigNum;
+use dep::bignum::fields::U256::{U256Params, U256_Instance};
+use dep::bignum::fields::U384::{U384_Params, U384_Instance};
+use dep::bignum::fields::U4096::{U4096Params, U4096_Instance};
+use dep::bignum::runtime_bignum::{BigNumParamsTrait as RuntimeBigNumParamsTrait, BigNumInstance};
+use dep::bignum::BigNumParamsTrait;
+
+fn benchmark_eq<let N: u64, Params>(
+    x: Field,
+    y: Field,
+    instance: BigNumInstance<N, Params>
+) where Params: RuntimeBigNumParamsTrait<N> + BigNumParamsTrait<N> {
+    let mut a_bn: BigNum<N, Params> = instance.__derive_from_seed([x as u8]);
+    let mut b_bn: BigNum<N, Params> = instance.__derive_from_seed([y as u8]);
+
+    for _ in 0..100 {
+        assert(a_bn == b_bn);
+
+        let temp = a_bn;
+        a_bn = b_bn;
+        b_bn = temp;
+    }
+}
+
+pub fn benchmark_eq_U256(x: Field, y: Field) {
+    benchmark_eq(x, y, U256_Instance)
+}
+
+pub fn benchmark_eq_U384(x: Field, y: Field) {
+    benchmark_eq(x, y, U384_Instance)
+}
+
+pub fn benchmark_eq_U4096(x: Field, y: Field) {
+    benchmark_eq(x, y, U4096_Instance)
+}
