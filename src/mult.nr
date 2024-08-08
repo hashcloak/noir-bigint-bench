@@ -2,6 +2,8 @@ use dep::bignum::BigNum;
 use dep::bignum::fields::U256::{U256Params, U256_Instance};
 use dep::bignum::fields::U384::{U384_Params, U384_Instance};
 use dep::bignum::fields::U4096::{U4096Params, U4096_Instance};
+use dep::bignum::fields::U1024::{U1024Params, U1024_Instance};
+use dep::bignum::fields::U2048::{U2048Params, U2048_Instance};
 use dep::bignum::runtime_bignum::{BigNumParamsTrait as RuntimeBigNumParamsTrait, BigNumInstance};
 use dep::bignum::BigNumParamsTrait;
 
@@ -31,4 +33,12 @@ pub fn benchmark_mult_U384(x: Field, y: Field) {
 
 pub fn benchmark_mult_U4096(x: Field, y: Field) {
     benchmark_multiplication(x, y, U4096_Instance)
+}
+
+pub fn benchmark_mult_U1024(x: Field, y: Field) {
+    benchmark_multiplication(x, y, U1024_Instance)
+}
+
+pub fn benchmark_mult_U2048(x: Field, y: Field) {
+    benchmark_multiplication(x, y, U2048_Instance)
 }
