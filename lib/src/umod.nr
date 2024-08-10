@@ -1,0 +1,45 @@
+use dep::bignum::BigNum;
+use dep::bignum::fields::U256::{U256Params, U256_Instance};
+use dep::bignum::fields::U384::{U384_Params, U384_Instance};
+use dep::bignum::fields::U4096::{U4096Params, U4096_Instance};
+use dep::bignum::fields::U1024::{U1024Params, U1024_Instance};
+use dep::bignum::fields::U2048::{U2048Params, U2048_Instance};
+use dep::bignum::runtime_bignum::{BigNumParamsTrait as RuntimeBigNumParamsTrait, BigNumInstance};
+use dep::bignum::BigNumParamsTrait;
+
+fn benchmark_umod<let N: u64, Params>(
+    x: Field,
+    y: Field,
+    instance: BigNumInstance<N, Params>
+) where Params: RuntimeBigNumParamsTrait<N> + BigNumParamsTrait<N> {
+    let mut a_bn: BigNum<N, Params> = instance.__derive_from_seed([x as u8]);
+    let mut b_bn: BigNum<N, Params> = instance.__derive_from_seed([y as u8]);
+
+    for _ in 0..100 {
+        let c_bn = a_bn.umod(b_bn);
+
+        let temp = a_bn;
+        a_bn = c_bn;
+        b_bn = temp;
+    }
+}
+
+pub fn benchmark_umod_U256(x: Field, y: Field) {
+    benchmark_umod(x, y, U256_Instance)
+}
+
+pub fn benchmark_umod_U384(x: Field, y: Field) {
+    benchmark_umod(x, y, U384_Instance)
+}
+
+pub fn benchmark_umod_U4096(x: Field, y: Field) {
+    benchmark_umod(x, y, U4096_Instance)
+}
+
+pub fn benchmark_umod_U1024(x: Field, y: Field) {
+    benchmark_umod(x, y, U1024_Instance)
+}
+
+pub fn benchmark_umod_U2048(x: Field, y: Field) {
+    benchmark_umod(x, y, U2048_Instance)
+}
