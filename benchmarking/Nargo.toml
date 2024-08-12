@@ -1,0 +1,9 @@
+[package]
+name = "bigint_benchmarking"
+type = "bin"
+authors = ["HashCloak"]
+compiler_version = ">=0.30.0"
+
+[dependencies]
+lib = { path = "../lib" }
+bignum = { tag = "v0.3.0", git = "https://github.com/noir-lang/noir-bignum" }

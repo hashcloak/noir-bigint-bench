@@ -1,0 +1,3 @@
+Type,Operation,ACIR opcodes,Circuit size
+U256,add,1822,5510
+U384,add,2422,6875

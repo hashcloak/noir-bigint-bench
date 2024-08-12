@@ -1,0 +1,8 @@
+[package]
+name = "bench_mult_U2048"
+type = "bin"
+authors = [""]
+compiler_version = ">=0.32.0"
+
+[dependencies]
+bench_lib = { path = "../../../lib" }
