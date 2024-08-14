@@ -1,5 +1,7 @@
 # Benchmark scripts
 
+Benchmark resources and scripts for [noir-bignum](https://github.com/noir-lang/noir-bignum) arithmetic operations.
+
 ## Requirements
 
 In the following list, we present the requirements to execute the benchmark scripts:
