@@ -1,9 +1,21 @@
-# Noir React Native starter
+# Bignum Benchmarking on Mobile
 
-## Description
+This project contains a simple react native app that performs proving of the [Noir Bignum](https://github.com/noir-lang/noir-bignum) functions. Currently only implemented for iOS.
 
-This is a simple React Native app showcasing how to use Noir in a mobile app (both for iOS and Android) to generate and verify proofs directly on mobile phones.
+This project was created using the [Noir React Native Starter](https://github.com/madztheo/noir-react-native-starter) created by [Théo Madzou](https://x.com/madztheo). 
 
+Below are the original instructions of the starter template, which can be used to build and run the project. Note: the benchmark functionality has only been implemented for iOS. 
+
+For the benchmarks, this project uses the library of the benchmark projects. To add more benchmarks, simply add circuits that point to the desired library functions as well as UI that trigger proving of the circuits.
+
+## Notes
+
+- Tested for iOS (iPhone 15 Pro)
+- srs download didn't work for specific circuits. Default srs did work. Issue reported [here](https://github.com/madztheo/noir-react-native-starter/issues/4)
+- U4096 will cause crash because it uses too much memory (does the srs suffice here?)
+
+
+# Noir React Native Starter original instructions
 ## Mobile proving
 
 ### iOS
