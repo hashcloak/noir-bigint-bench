@@ -6,6 +6,7 @@ use dep::bignum::fields::U1024::{U1024Params, U1024_Instance};
 use dep::bignum::fields::U2048::{U2048Params, U2048_Instance};
 use dep::bignum::runtime_bignum::{BigNumParamsTrait as RuntimeBigNumParamsTrait, BigNumInstance};
 use dep::bignum::BigNumParamsTrait;
+use crate::params::N_ITERATIONS;
 
 fn benchmark_eq<let N: u64, Params>(
     x: Field,

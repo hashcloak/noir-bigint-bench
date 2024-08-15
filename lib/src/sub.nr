@@ -6,6 +6,7 @@ use dep::bignum::fields::U1024::{U1024Params, U1024_Instance};
 use dep::bignum::fields::U2048::{U2048Params, U2048_Instance};
 use dep::bignum::runtime_bignum::{BigNumParamsTrait as RuntimeBigNumParamsTrait, BigNumInstance};
 use dep::bignum::BigNumParamsTrait;
+use crate::params::N_ITERATIONS;
 
 fn benchmark_sub<let N: u64, Params>(
     x: Field,
@@ -15,7 +16,7 @@ fn benchmark_sub<let N: u64, Params>(
     let mut a_bn: BigNum<N, Params> = instance.__derive_from_seed([x as u8]);
     let mut b_bn: BigNum<N, Params> = instance.__derive_from_seed([y as u8]);
 
-    for _ in 0..100 {
+    for _ in 0..N_ITERATIONS {
         let c_bn = a_bn - b_bn;
 
         a_bn = b_bn;
