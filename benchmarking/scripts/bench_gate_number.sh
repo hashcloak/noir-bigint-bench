@@ -2,17 +2,6 @@
 
 # Script to test the arithmetic operations between BigNum types in the
 # noir-bignum library.
-#
-# How to run:
-#   1. Go to the root of the project.
-#   2. Run the command 
-#       bash scripts/run_experiment.sh <flags>
-#   
-#   The available flags are:
-#       -s - Run the benchmark for additions.
-#       -m - Run the benchmark for multiplications.
-#       -r - Run the benchmark for subtraction
-#       -a - Run the benchmark for all the arithmetic operations.
 
 # Experiment to be executed.
 experiment_name="schoolbook"
