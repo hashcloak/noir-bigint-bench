@@ -19,5 +19,5 @@ use lib::umod::{
 use lib::eq::{benchmark_eq_U256, benchmark_eq_U384, benchmark_eq_U1024, benchmark_eq_U2048, benchmark_eq_U4096};
 
 fn main(a: Field, b: Field) {
-    benchmark_add_U1024(a, b);
+    benchmark_add_U4096(a, b);
 }

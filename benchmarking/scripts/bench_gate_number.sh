@@ -10,11 +10,13 @@ experiment_name="schoolbook"
 target_file="./target/bigint_benchmarking.json"
 code_content_file="scripts/code_content.txt"
 main_file="src/main.nr"
-results_file="results/results_gate_count_${experiment_name}.csv"
+results_file="results/results_gate_count_${experiment_name}_$(date).csv"
+params_content_file="scripts/params_content.txt"
+params_file="../lib/src/params.nr"
 
 # Read the parameters to execute just the selected experiments
 operations=()
-while getopts "smardek" flags; do
+while getopts "smardekn:" flags; do
     case $flags in
     s)
         echo "Experiments for additions will be executed."
@@ -40,6 +42,9 @@ while getopts "smardek" flags; do
         echo "Experiments for unsigned remainder will be executed."
         operations+=("umod")
     ;;
+    n)
+        n_iterations="$OPTARG"
+    ;;
     a)
         echo "All the experiments will be executed."
         operations=("add" "mult" "sub" "udiv" "eq" "umod")
@@ -61,7 +66,7 @@ declare -a types=(
 mkdir -p "$(dirname "$results_file")"
 
 # Defines the header for the CSV file
-echo "Type,Operation,ACIR opcodes,Circuit size" > $results_file
+echo "Type,Operation,Iterations,ACIR opcodes,Circuit size" > "$results_file"
 
 for operation in "${operations[@]}"; do
     for type in "${types[@]}"; do
@@ -71,6 +76,10 @@ for operation in "${operations[@]}"; do
         # code and write it into the main.nr
         replaced_code=$(sed -e "s/\${type}/$type/" -e $"s/\${operation}/$operation/" $code_content_file)
         echo "$replaced_code" > $main_file 
+
+        # Replace the number of iterations in the library parameter file
+        replaced_params=$(sed -e "s/\${n_iterations}/$n_iterations/" $params_content_file)
+        echo "$replaced_params" > $params_file
 
         # Compile the file.
         nargo compile
@@ -85,7 +94,7 @@ for operation in "${operations[@]}"; do
         echo "EXPERIMENT: $operation, ACIR OP: $acir_opcodes, Circuit Size: $circuit_size"
 
         # Save results in files.
-        echo "$type,$operation,$acir_opcodes,$circuit_size" >> $results_file
+        echo "$type,$operation,$n_iterations,$acir_opcodes,$circuit_size" >> "$results_file"
     done
 done
 echo "Experiment finished."

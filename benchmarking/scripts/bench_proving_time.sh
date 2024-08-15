@@ -11,13 +11,15 @@ main_file="src/main.nr"
 witness_name="witness"
 witness_path="./target/$witness_name.gz"
 proof_path="./target/proof"
-path_results="./results/results_verification_time_${experiment_name}".csv
+path_results="./results/results_proving_time_${experiment_name}_$(date)".csv
+params_content_file="scripts/params_content.txt"
+params_file="../lib/src/params.nr"
 
-echo "Type,Operation,Prover,Avg. Time,Std. Dev." > "$path_results"
+echo "Type,Operation,Iterations,Prover,Avg. Time,Std. Dev." > "$path_results"
 
 # Read the parameters to execute just the selected experiments
 operations=()
-while getopts "smardek" flags; do
+while getopts "smardekn:" flags; do
     case $flags in
     s)
         echo "Experiments for additions will be executed."
@@ -42,6 +44,9 @@ while getopts "smardek" flags; do
     k)
         echo "Experiments for unsigned remainder will be executed."
         operations+=("umod")
+    ;;
+    n)
+        n_iterations="$OPTARG"
     ;;
     a)
         echo "All the experiments will be executed."
@@ -76,6 +81,10 @@ for prover in "${provers[@]}"; do
             replaced_code=$(sed -e "s/\${type}/$type/" -e $"s/\${operation}/$operation/" $code_content_file)
             echo "$replaced_code" > $main_file 
 
+            # Replace the number of iterations in the library parameter file
+            replaced_params=$(sed -e "s/\${n_iterations}/$n_iterations/" $params_content_file)
+            echo "$replaced_params" > $params_file
+
             # Create witness
             nargo execute $witness_name
 
@@ -89,7 +98,7 @@ for prover in "${provers[@]}"; do
 
             IFS=" ± " read -r -a parts <<< "$time_concatenated"
             echo "Size of array: ${#parts}"
-            echo "$type,$operation,$prover,${parts[0]},${parts[2]}" >> "$path_results"
+            echo "$type,$operation,$n_iterations,$prover,${parts[0]},${parts[2]}" >> "$path_results"
         done
     done
 done
