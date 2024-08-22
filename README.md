@@ -6,6 +6,13 @@ In the `mobile/` folder, you will find the source code needed to run the mobile 
 
 In the `benchmarking/` folder, you will find the scripts used to benchmark the noir-bignum library on a computer. Inside the folder, you will find detailed [instructions](https://github.com/hashcloak/noir-bigint-bench/blob/main/benchmarking/README.md) on how to run the benchmark by yourself.
 
+## Dependencies
+
+- Noir ≥ v0.32.0
+- Barretenberg ≥ v0.46.1
+
+Refer to [Noir's docs](https://noir-lang.org/docs/getting_started/installation/) and [Barretenberg's docs](https://github.com/AztecProtocol/aztec-packages/blob/master/barretenberg/cpp/src/barretenberg/bb/readme.md#installation) for installation steps.
+
 ## Benchmark description
 
 The purpose of the benchmark is to measure the performance of sum, subtraction, and multiplication of the [noir-bignum repository](https://github.com/noir-lang/noir-bignum). The computer benchmark measures three performance metrics: the number of gates of the circuit, the proving time, and the verification time. The mobile benchmarks measure just the proving time.
